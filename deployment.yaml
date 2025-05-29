@@ -1,0 +1,59 @@
+#! Matija needs to adjust this, it's just a base template now
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: github-runner
+  labels:
+    app: github-runner
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: github-runner
+  template:
+    metadata:
+      labels:
+        app: github-runner
+    spec:
+      containers:
+      - name: github-runner
+        image: sematext/github-runner:latest
+        ports:
+        - containerPort: 9555
+        env:
+        - name: PORT
+          value: "9555"
+        - name: GITHUB_API_URL
+          value: "https://api.github.com"
+        - name: TARGET_REPO
+          value: "sematext/sematext-cloud"
+        - name: VALUES_REPO_URL
+          value: "sematext/deployment"
+        - name: VALUES_REPO_BRANCH
+          value: "master"
+        # GH Token to auth with the private repos (use the PAT for build@sematext.com)
+        - name: VALUES_REPO_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: github-runner-secrets
+              key: values-repo-token
+              optional: true
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
