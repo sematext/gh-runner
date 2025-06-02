@@ -213,6 +213,8 @@ func (s *Server) handleDispatch(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	log.Printf("Using GitHub token: '%s'", githubToken)
+
 	var valuesContent []byte
 	var foundPath string
 	var err error
