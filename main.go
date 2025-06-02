@@ -204,10 +204,10 @@ func (s *Server) handleDispatch(w http.ResponseWriter, r *http.Request) {
 	}
 	
 	var githubToken string
-	if s.config.GitHubToken != "" {
-		githubToken = s.config.GitHubToken
-	} else if payload.GithubToken != "" {
+	if payload.GithubToken != "" {
 		githubToken = payload.GithubToken
+	} else if s.config.GitHubToken != "" {
+		githubToken = s.config.GitHubToken
 	} else {
 		http.Error(w, "A GitHub token is required", http.StatusBadRequest)
 		return
