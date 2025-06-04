@@ -1,4 +1,4 @@
-#! Matija needs to adjust this, it's just a base template now
+# This is an example of a deployment for the github-runner, not production-ready
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -27,17 +27,15 @@ spec:
           value: "https://api.github.com"
         - name: TARGET_REPO
           value: "sematext/sematext-cloud"
-        - name: VALUES_REPO_URL
+        - name: DEPLOYMENT_REPO
           value: "sematext/deployment"
-        - name: VALUES_REPO_BRANCH
-          value: "master"
-        # GH Token to auth with the private repos (use the PAT for build@sematext.com)
-        - name: VALUES_REPO_TOKEN
+        - name: GITHUB_TOKEN
           valueFrom:
             secretKeyRef:
               name: github-runner-secrets
               key: values-repo-token
               optional: true
+        # Very lightweight
         resources:
           requests:
             memory: "64Mi"
