@@ -1,6 +1,6 @@
 # Self-hosted GitHub Runner
 
-This is a lightweight service that's used as part of our Synthetics CI/CD for the `sematext-cloud` repo. It's designed to run persistently as a server on one of our kubernetes clusters and listen for requests. 
+This is a lightweight service that's used as part of our Synthetics CI/CD for the `sematext-cloud` repo. It's designed to run persistently as a server on one of our kubernetes clusters and listen for requests. You can use it as an example on how to convert GitHub workflows to self-hosted applications which you can run on your existing environments and circumvent GitHub Actions Minutes limitations, since it also showcases how to interact with GitHub from external services.
 
 These requests are sent from ArgoCD when an environment deployment is complete. This service then collects the latest commit hash for the deployed environment from its config on the `deployment` repo so that it can be linked with the appropriate commit on the `sematext-cloud` repo. This information is then sent to the `sematext-cloud` repo as a `repository_dispatch` event.
 
