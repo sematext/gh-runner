@@ -1,9 +1,10 @@
 # Self-hosted GitHub Runner
 
-This is a lightweight service that's used as part of our Synthetics CI/CD for the `sematext-cloud` repo. It's designed to run persistently as a server on one of our kubernetes clusters and listen for requests. You can use it as an example on how to convert GitHub workflows to self-hosted applications which you can run on your existing environments and circumvent GitHub Actions Minutes limitations, since it also showcases how to interact with GitHub from external services.
+This is a working example of a lightweight service that's used as part of Sematext's Synthetics CI/CD. You can use it as an example for how to convert your GitHub workflows to self-hosted applications which you can run on your existing environments and circumvent GitHub Actions Minutes limitations, since it also showcases how to interact with GitHub from external services. 
 
-These requests are sent from ArgoCD when an environment deployment is complete. This service then collects the latest commit hash for the deployed environment from its config on the `deployment` repo so that it can be linked with the appropriate commit on the `sematext-cloud` repo. This information is then sent to the `sematext-cloud` repo as a `repository_dispatch` event.
+At Sematext we actually use this internally for reasons described here: https://sematext.com/docs/synthetics/ci-cd/ci-cd-self-hosting/
 
+This self-hosted Github Runner is designed to run persistently as a server on one of our kubernetes clusters and listen for requests. These requests are sent from ArgoCD when an environment deployment is complete. This service then collects the latest commit hash for the deployed environment from its config on the `deployment` repo so that it can be linked with the appropriate commit on the `sematext-cloud` repo. This information is then sent to the `sematext-cloud` repo as a `repository_dispatch` event.
 
 
 ## Running locally
@@ -27,7 +28,6 @@ The base image we're using is very light, so the building process shouldn't take
 docker build -t gh-runner .
 docker run --name gh-runner -p 9555:9555 gh-runner
 ```
-
 
 
 ## Authorization for private repositories
